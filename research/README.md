@@ -19,3 +19,15 @@ Section II.D (page 7) of the paper says that its wetting-droplet initial conditi
 In a separate preliminary Python port, coarse `N=8/12` time evolution falsely leaves the pinned-left state shortly after reaching it, whereas `N=16` remains pinned through the tested interval `t=0.02`. At the first pinning event, the estimated left cosine was `0.95780185, 0.95998635, 0.96069454` for `N=8,12,16`, versus the advancing cosine `1/1.04=0.96153846`. The first two exceed the MATLAB event tolerance (`1e-3`) on the wrong side due to finite-difference error. This is an **unvalidated-port resolution diagnostic**, not proof of any fault in the authors' default `N=25` simulations.
 
 Keep this investigation separate from the Figure 11 regeneration PR; no scientific correction is proposed yet.
+
+## Archived Figure 11 data provenance
+
+The paper's Section V describes the initial bisection bounds for V=0.2 as
+[V+0.03, 0.97], while the deposited Generate_numerics_data_Fig11.m script
+uses [V+0.01, 1]. Running the independent script
+python -m research.fig11_provenance
+against Data/numerics_comparison_data.mat establishes that all 41 finite
+archived thresholds fit the eight-step bisection lattice of the deposited
+code's interval, and none fit the article's stated interval at machine
+precision. This is a provenance difference, NOT a demonstrated problem
+with the trapping model or figures. Original generation history is unknown.
