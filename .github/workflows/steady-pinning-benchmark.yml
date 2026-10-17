@@ -22,6 +22,8 @@ jobs:
         run: octave --quiet --no-gui --eval "run('research/test_steady_pinned_equilibrium.m')"
       - name: Cross-check initial pinning against original unmodified PDE
         run: octave --quiet --no-gui --eval "run('research/test_original_first_pinning.m')"
+      - name: Compare original hysteresis-driven left depinning at two strengths
+        run: octave --quiet --no-gui --eval "run('research/test_original_hysteresis_divergence.m')"
 
   provenance-check:
     runs-on: ubuntu-latest

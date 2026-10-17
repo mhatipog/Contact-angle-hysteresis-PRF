@@ -53,3 +53,12 @@ PMAD and without changed event equations. It compares the first pinning
 time and contact-line positions to an independent SciPy finite-difference
 reconstruction. It is not a full trapping/escape test. All research scripts
 remain on this independent branch and are not part of the upstream PR.
+
+## Original-model hysteresis transition check
+
+The Octave test research/test_original_hysteresis_divergence.m runs the authors'
+UNMODIFIED fout.m, EventsFcn.m and update_pinning_conditions.m up to time
+0.03 for N=16, nu=4, V=0.2, xplus0=0.65. It checks that lambda_max=0.02
+reaches the left receding state after first pinning, while lambda_max=0.04
+remains pinned. This is a *short-time* event check, not a proof of full-time
+escape versus indefinitely stable trapping or numerical convergence.
