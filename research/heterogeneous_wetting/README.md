@@ -48,19 +48,18 @@ dynamic effect or a novelty claim.
 ## Run
 
 From this folder:
-\`\`\`sh
+```sh
 python -m pip install numpy scipy pytest
 python -m pytest -q test_green_solver.py
 python green_solver.py
-\`\`\`
+```
 
 ## What remains to qualify as research
 
 1. Compute constrained-energy stability and check the full wetting
-   free energy, including contact-line dissipation; the corrected
-   Hatipogullari–Ondarçuhu–Colinet unpublished *Dynamics* manuscript
-   is relevant but does not automatically extend to two moving menisci
-   and elastic walls.
+   free energy, including contact-line dissipation and external work.
+   Results for one rigid-channel meniscus must not be assumed valid
+   for two menisci interacting with elastic walls.
 2. Derive an energy-consistent dynamic law with the fluid mobility and
    reproduce the original constant-hysteresis limit before replacing it.
 3. Verify physical basins and finite-time escape versus stationary
