@@ -90,3 +90,39 @@ patterned right boundary confirms the first-event classification through
 observation t=0.1 across N=12,16,20. This is a conditioned, model-level
 phase contrast, **not** validated experimental hysteresis and **not**
 a demonstrated universal novelty result.
+
+## Link to the unpublished microchannel dynamics: kinetic regularization
+
+As a first physically motivated extension beyond a prescribed local
+advancing angle, let cY(xplus)=1+A*g(xplus) and impose the linearized
+contact-line kinetic relation
+
+    kappa_app = cY(xplus) - mu * xplus_dot,  mu>=0.
+
+This corresponds to a monotone microscopic advancing friction law near
+zero speed; the local force–velocity product is mu*xplus_dot^2 >=0.
+A full nonzero-speed Cox–Voinov angle-cube closure would be more accurate
+away from this limit. mu is a separate dimensionless kinetic coefficient,
+NOT inferred from previous experiments here.
+
+The original PDE is affine in the right ghost-point pressure factor,
+which permits an exact Schur-complement elimination with **only two
+calls** to the original unmodified fout.m per field evaluation:
+
+    F0=fout(...,[0,1],0);   B=fout(...,[0,1],1)-F0;
+    v=(F0_right+B_right*A*g)/(1+mu*B_right);
+    F=F0+B*(A*g-mu*v).
+
+This is a solver-free implicit kinetic correction, not a time-iterated
+DAE. Positive 1+mu*B_right is checked at every evaluation.
+
+**Prediction:** at an exactly stationary state v=0, so the static
+phase-transition amplitude is independent of mu. However the temporal
+approach and first-depinning times depend on mu. This cleanly separates
+a metastable equilibrium property (your statics) from rate dependence
+(your unpublished dynamics), now in the original flexible-channel
+discretization. The MATLAB CI test evaluates mu=0,.002,.01 with two
+opposite patterns, checks the zero-mu exact equivalence, checks equilibrium
+against a separate quartic beam BVP, and compares first-event outcomes.
+The closure requires subsequent full energy-budget checking, particularly
+if other contact-line regimes become reachable.

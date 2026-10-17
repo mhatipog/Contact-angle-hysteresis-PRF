@@ -23,6 +23,8 @@ jobs:
         run: octave --quiet --no-gui --eval "run('research/test_patterned_phase_transition.m')"
       - name: Audit release time step sensitivity
         run: octave --quiet --no-gui --eval "run('research/patterned_event_convergence.m')"
+      - name: Compare force and kinetic contact-line closure
+        run: octave --quiet --no-gui --eval "run('research/test_patterned_kinetic.m')"
   implicit-equilibrium:
     runs-on: ubuntu-latest
     timeout-minutes: 10
