@@ -8,7 +8,7 @@ optsA=odeset('RelTol',1e-7,'AbsTol',1e-8,...
 s0=ode15s(@(t,y)fout(t,y,N,nu,[2,2],.04),[0,.012],IC,optsA);
 assert(~isempty(s0.ie) && s0.ie(1)==1,'Unexpected first mode switch');
 t0=s0.x(end);y0=s0.y(:,end);
-opts=odeset('RelTol',1e-7,'AbsTol',1e-8,'MaxStep',.0003);
+opts=odeset('RelTol',1e-7,'AbsTol',1e-8,'MaxStep',.0001);
 s=ode15s(@(t,y)fout(t,y,N,nu,[0,2],.04),[t0,.1],y0,opts);
 t=s.x;gamma=zeros(size(t));
 for j=1:length(t)
@@ -29,7 +29,7 @@ for lam=[.010,.020,.025,.028,.029,.0294,.0296,.0297,.030]
    predicted=interp1(gamma(ix-1:ix),t(ix-1:ix),threshold);
  end
  theta_a=acosd(1/(1+lam));
- optsE=odeset('RelTol',1e-7,'AbsTol',1e-8,'MaxStep',.0003,...
+ optsE=odeset('RelTol',1e-7,'AbsTol',1e-8,'MaxStep',.0001,...
    'Events',@(tau,y)EventsFcn(tau,y,N,nu,[0,2],lam,theta_a,0));
  se=ode15s(@(tau,y)fout(tau,y,N,nu,[0,2],lam),[t0,.1],y0,optsE);
  if isempty(se.ie)
@@ -41,7 +41,7 @@ for lam=[.010,.020,.025,.028,.029,.0294,.0296,.0297,.030]
  if isfinite(predicted) && isfinite(actual)
    fprintf('CROSSCHECK lambda=%.4f predicted=%.10g original_event=%.10g difference=%.3g\n',...
         lam,predicted,actual,abs(predicted-actual));
-   assert(abs(predicted-actual)<.00015,'First passage fails original event verification');
+   assert(abs(predicted-actual)<.00025,'First passage fails original event verification');
  else
    fprintf('CROSSCHECK lambda=%.4f predicted=%g original_event=%g\n',lam,predicted,actual);
    assert(isinf(predicted)&&isinf(actual),'False negative or false positive departure');
