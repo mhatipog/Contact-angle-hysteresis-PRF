@@ -20,3 +20,16 @@ jobs:
           sudo apt-get install -y octave
       - name: Verify stationary pinned equilibrium and boundary conditions
         run: octave --quiet --no-gui --eval "run('research/test_steady_pinned_equilibrium.m')"
+
+  provenance-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install scientific-array readers
+        run: python -m pip install 'numpy>=1.26,<3' 'scipy>=1.11,<2'
+      - name: Audit deposited Figure 11 threshold lattice
+        run: python -m research.fig11_provenance
