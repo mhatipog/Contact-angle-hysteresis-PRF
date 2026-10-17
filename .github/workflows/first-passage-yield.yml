@@ -20,3 +20,5 @@ jobs:
         run: octave --quiet --no-gui --eval "run('research/threshold_from_trajectory.m')"
       - name: Validate predicted first passage directly against original event solver
         run: octave --quiet --no-gui --eval "run('research/validate_event_reconstruction.m')"
+      - name: Explore transient yield overshoot across bendability and initial location
+        run: octave --quiet --no-gui --eval "run('research/overshoot_scan.m')"
