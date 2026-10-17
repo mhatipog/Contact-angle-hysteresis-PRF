@@ -49,3 +49,24 @@ Related context: Hatipogullari et al. (2019), Phys. Rev. Fluids 4,
 044008; Bradley et al. (2021), Phys. Rev. Fluids 6, 114003.
 
 No unpublished manuscripts are included here.
+
+## Independent fixed-volume cantilever bridge
+
+The companion beam_bridge.py **does not fit a spring**. It uses the
+clamped/free Green kernel G(x,s)=min(x,s)^2(3max(x,s)-min(x,s))/6, and the
+reduced fixed-volume energy E=(V-d)^2/(2I)-(nu/c_ref)*integral cY dx.
+At a selected fixed center q=.6, the homogeneous channel has a stable
+interior minimizing separation d0~.21416245, with longitudinal curvature
+K_eff~226.30. Set chemical wavelength equal to d0 and optimize
+the separation again for A=.004,.008,.012,.016. The energy correction is
+
+    Delta E = -(nu*A/c_ref)^2 sin^2(kq+phi)/(2*K_eff) + O(A^3),
+
+and the numerical corrections agree within 0.3%. This is a LOCAL
+ENERGY correction at q held fixed; no full-geometry trapping
+threshold, complete mobility law or dynamical stability is claimed.
+
+The remaining scientific challenge is the translation degree of freedom
+and a full matched physical parameter comparison with the original
+hysteresis PDE. The weak-pattern calculation is a well-defined bridge,
+not a substitute for that test.
