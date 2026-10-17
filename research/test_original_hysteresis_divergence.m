@@ -19,7 +19,7 @@ for lambda_max=[0.02,0.04]
         end
         max_mass_error=max(max_mass_error,max(abs(mean(sol.y(1:N,:),1)-V)));
         new_t=sol.x(end); IC=sol.y(:,end);
-        if any(sol.ie==[5,6,7])
+        if ~isempty(sol.ie) && any(ismember(sol.ie,[5,6,7]))
             error('Unexpected terminal contact/wall event in t<=0.03 diagnostic');
         end
         if isempty(sol.ie)
