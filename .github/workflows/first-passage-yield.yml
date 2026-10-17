@@ -1,0 +1,20 @@
+name: First passage CAH yield envelope
+on:
+  push:
+    branches: [research/first-passage-yield-envelope]
+    paths: [research/**, .github/workflows/first-passage-yield.yml]
+  workflow_dispatch:
+jobs:
+  original-ode15s-first-passage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Octave
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y octave
+      - name: Audit stationary beam equations
+        run: octave --quiet --no-gui --eval "run('research/test_steady_pinned_equilibrium.m')"
+      - name: Compare parameter-free yield envelope to original dynamical switching
+        run: octave --quiet --no-gui --eval "run('research/threshold_from_trajectory.m')"
