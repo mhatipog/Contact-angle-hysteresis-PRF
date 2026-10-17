@@ -1,0 +1,22 @@
+name: Independent steady trapping benchmark
+
+on:
+  push:
+    branches: [research/steady-pinning-benchmark]
+    paths:
+      - 'research/**'
+      - '.github/workflows/steady-pinning-benchmark.yml'
+  workflow_dispatch:
+
+jobs:
+  stationary-matlab-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install GNU Octave
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y octave
+      - name: Verify stationary pinned equilibrium and boundary conditions
+        run: octave --quiet --no-gui --eval "run('research/test_steady_pinned_equilibrium.m')"
