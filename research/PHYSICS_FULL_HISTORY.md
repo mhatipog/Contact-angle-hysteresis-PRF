@@ -57,8 +57,7 @@ This checks **contact-line dissipation only**, not the complete fluid-beam
 energy budget (bulk viscous dissipation and mechanical work remain to be
 explicitly audited). The local receding angle is an independent hysteresis
 offset from advancing pressure, which is an effective model assumption,
-not derived from resolved defect-scale stick-slip energy. Tests run from
-initial patterned state through first release, N=12/16/20, M=40/100.
+not derived from resolved defect-scale stick-slip energy. Pointwise near-equilibrium tests were run at N=12/16/20, M=100/300. All-time nonlinear Cox integration remains unvalidated.
 
 ## Exact conservative stationary energy: thermodynamic connection to CAH
 
@@ -95,8 +94,7 @@ initial contact-line speeds, well outside the small-speed quasi-steady
 range when interpreting the cubic Cox law at the tested M=40/100.
 The full two-line *linearized* kinetic closure remains in use during
 that initial stiff transient, retaining each surface's own history.
-The unlinearized angle-cubed law is applied **after the first left pin**
-when the advancing-right speed is small, with M=100 and 300.
-Do not represent this as all-time full Cox integration. At t=0 the
+The unlinearized angle-cubed law is **evaluated pointwise on slowly relaxed states after first pinning**, with M=100 and 300. This is not an integrated Cox trajectory.
+Do not represent this as all-time full Cox integration. The standalone all-time Cox solver currently fails a positive-angle domain check on stiff trial states. At t=0 the
 cubic law can cross its physically admissible angle domain during
 stiff solver trials; silently clipping contact angles is prohibited.
