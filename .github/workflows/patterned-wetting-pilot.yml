@@ -1,0 +1,21 @@
+name: Patterned wetting pilot
+on:
+  push:
+    branches: [research/heterogeneous-wetting-equilibria]
+    paths:
+      - 'research/heterogeneous_wetting/**'
+      - '.github/workflows/patterned-wetting-pilot.yml'
+  workflow_dispatch:
+jobs:
+  stationary-equilibria:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install numerical dependencies
+        run: python -m pip install 'numpy>=1.26,<3' 'scipy>=1.11,<2' pytest
+      - name: Check beam equations and wavelength contrast
+        run: python -m pytest -q research/heterogeneous_wetting/test_green_solver.py
