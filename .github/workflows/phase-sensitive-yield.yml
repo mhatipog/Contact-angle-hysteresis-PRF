@@ -21,3 +21,16 @@ jobs:
         run: octave --quiet --no-gui --eval "run('research/phase_sensitive_yield.m')"
       - name: Validate opposite-phase release switch against exact beam equilibrium
         run: octave --quiet --no-gui --eval "run('research/test_patterned_phase_transition.m')"
+      - name: Audit release time step sensitivity
+        run: octave --quiet --no-gui --eval "run('research/patterned_event_convergence.m')"
+  implicit-equilibrium:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install 'numpy>=1.26,<3' 'scipy>=1.11,<2'
+      - name: Verify critical amplitude from implicit 4x4 sensitivity
+        run: python research/pattern_implicit_sensitivity.py

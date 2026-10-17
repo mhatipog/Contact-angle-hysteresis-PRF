@@ -68,3 +68,25 @@ conditional-state experiment, not a complete patterned droplet's initial
 history or full escape/trapping classification. Numerical tolerance=0.001
 belongs to original event logic and is not physical hysteresis.
 No upstream PR is created.
+
+## Independent verified beam threshold and inverse sensitivity
+
+The exact quartic clamped/free beam boundary conditions admit an implicit
+function theorem. With q=(xplus,p,c,d), R(q,A)=0 and
+Gamma(q)=-p*h_left/nu-1, differentiating yields
+
+    dq/dA=-R_q^{-1} R_A,   dGamma/dA=Gamma_q*(dq/dA).
+
+The complex-step 4x4 Jacobian gives slope dGamma/dA=-0.896031545419
+at nu=4,V=.2,xminus=.4454383377, period=.25. For pinning threshold
+lambda=.0293, the LINEAR predicted positive-phase transition A=0.00161456166;
+the exact nonlinear equilibrium gives A=0.00161419996, a 0.0224% relative
+error. The original event safeguard of 0.001 changes the apparent numerical
+switch amplitude to A~=0.00046580; these are different quantities.
+
+A=+.002 yields stationary Gamma=0.02895414 < lambda; A=-.002 yields
+Gamma=0.03253826 > lambda. Original source discretization plus physically
+patterned right boundary confirms the first-event classification through
+observation t=0.1 across N=12,16,20. This is a conditioned, model-level
+phase contrast, **not** validated experimental hysteresis and **not**
+a demonstrated universal novelty result.
