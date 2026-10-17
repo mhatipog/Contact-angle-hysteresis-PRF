@@ -1,0 +1,22 @@
+name: Patterned CAH from initial contact-line history
+on:
+  push:
+    branches: [research/full-history-patterned-cah]
+    paths:
+      - 'research/fullhistory*.m'
+      - 'research/test_fullhistory*.m'
+      - 'research/PHYSICS_FULL_HISTORY.md'
+      - '.github/workflows/full-history-patterned-cah.yml'
+  workflow_dispatch:
+jobs:
+  full-history-original-beam:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Octave
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y octave
+      - name: Reproduce full patterned history
+        run: octave --quiet --no-gui --eval "run('research/test_fullhistory_linear.m')"
