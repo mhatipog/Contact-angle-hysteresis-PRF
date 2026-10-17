@@ -22,3 +22,5 @@ jobs:
         run: octave --quiet --no-gui --eval "run('research/validate_event_reconstruction.m')"
       - name: Explore transient yield overshoot across bendability and initial location
         run: octave --quiet --no-gui --eval "run('research/overshoot_scan.m')"
+      - name: Independent spectral gap from original MATLAB RHS
+        run: octave --quiet --no-gui --eval "run('research/original_spectral_gap.m')"
