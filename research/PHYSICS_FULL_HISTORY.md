@@ -35,3 +35,27 @@ its yield observable against the independently solved exact quartic
 steady beam, and checks event detection and mass conservation at
 N=12,16,20 and mu=0,.01. No permanent trapping or experimental
 calibration is claimed. No upstream PR is affected.
+## Nonlinear contact-line closure directly from user's 2021 dynamics law
+
+Use the *unlinearized* positive-angle cubic relation
+s_i*v_i=M*(theta_app,i^3-theta_Young,i^3), with left s=-1, right s=+1.
+For Young cosine c_Y(x)=0.94*(1+A*g(x)), set
+
+   theta_Young=acos(c_Y),
+   theta_app=(theta_Young^3 + s*v/M)^(1/3),
+   pressure_multiplier=cos(theta_app)/0.94.
+
+At each RHS evaluation, the original PDE's affine pressure map gives a
+2-by-2 Newton solve for contact-line velocities. The right-hand-side
+solver, pressure ghost-point formulas and beam equations stay unchanged.
+The physical microscopic contact-line dissipation is nonnegative:
+
+   D_CL=sum[(c_Y-c_app)*(s_i*v_i)] >= 0
+
+because x -> cos x decreases on (0,pi) and the cubic relation is monotone.
+This checks **contact-line dissipation only**, not the complete fluid-beam
+energy budget (bulk viscous dissipation and mechanical work remain to be
+explicitly audited). The local receding angle is an independent hysteresis
+offset from advancing pressure, which is an effective model assumption,
+not derived from resolved defect-scale stick-slip energy. Tests run from
+initial patterned state through first release, N=12/16/20, M=40/100.
