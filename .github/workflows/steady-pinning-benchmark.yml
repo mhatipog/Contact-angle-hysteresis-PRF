@@ -25,6 +25,9 @@ jobs:
       - name: Compare original hysteresis-driven left depinning at two strengths
         run: octave --quiet --no-gui --eval "run('research/test_original_hysteresis_divergence.m')"
 
+      - name: Explore original finite-horizon threshold case (N=16, lambda=0.02)
+        run: octave --quiet --no-gui --eval "run('research/explore_finite_time.m')"
+
   provenance-check:
     runs-on: ubuntu-latest
     timeout-minutes: 10
