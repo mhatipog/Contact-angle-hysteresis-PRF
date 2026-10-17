@@ -20,5 +20,16 @@ jobs:
           sudo apt-get install -y octave
       - name: Reproduce full patterned history
         run: octave --quiet --no-gui --eval "run('research/test_fullhistory_linear.m')"
-      - name: Validate nonlinear angle-cubed Cox law with two patterned contact lines
+      - name: Validate nonlinear angle-cubed law in its low-speed regime
         run: octave --quiet --no-gui --eval "run('research/test_fullhistory_cox.m')"
+  conservative-energy-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install 'numpy>=1.26,<3' 'scipy>=1.11,<2'
+      - name: Verify static force equals derivative of exact beam energy
+        run: python research/energy_yield_identity.py

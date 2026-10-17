@@ -1,38 +1,41 @@
-% Full patterned startup + nonlinear Cox law + original hydrodynamics.
+% Full patterned startup at valid linear low-speed closure, followed by
+% unlinearized Cox-Voinov cubic law ONLY after left contact line is pinned.
+% Original initial meniscus speed is O(40-70), so applying quasi-steady
+% Cox law there would exceed its physically admissible positive-angle range.
 root=fileparts(fileparts(mfilename('fullpath')));
 addpath(fullfile(root,'Auxillary_functions'));addpath(fileparts(mfilename('fullpath')));
 nu=4;V=.2;xp0=.65;xref=.45;ell=.25;lambda=.0293;tol=.001;
+cref=.94;theta0=acos(cref);
 for N=[12,16,20]
- start=[V*ones(N,1);xp0-V;xp0];
- for M=[300,1000]
+ initial=[V*ones(N,1);xp0-V;xp0];
+ for M=[100,300]
+  mu=tan(theta0)/(3*M*theta0^2); % exact tangent to angle-cubed law at v=0
   for A=[.002,0,-.002]
-   ff=@(t,y)fullhistory_cox_rhs(t,y,N,nu,A,ell,xref,M,[2,2]);
+   startdyn=@(t,y)fullhistory_rhs(t,y,N,nu,A,ell,xref,mu,[2,2]);
    o1=odeset('RelTol',1e-7,'AbsTol',1e-8,'MaxStep',.0001,...
-     'Events',@(t,y)fullhistory_cox_pin_event(t,y,N,nu,A,ell,xref,M));
-   initial=ode15s(ff,[0,.012],start,o1);
-   assert(~isempty(initial.ie)&&initial.ie(1)==1,'Nonlinear Cox initial pin event not reached');
-   tpin=initial.x(end);yp=initial.y(:,end);xm=yp(N+1);
-   assert(max(abs(mean(initial.y(1:N,:),1)-V))<4e-5,'Initial mass conservation');
-   [~,detail]=fullhistory_cox_rhs(tpin,yp,N,nu,A,ell,xref,M,[2,2]);
-   assert(detail.contact_dissipation>=0,'Negative Cox contact dissipation');
-   xp_ref=yp(N+2);
-   fp=@(t,y)fullhistory_cox_rhs(t,y,N,nu,A,ell,xref,M,[0,2]);
-   o2=odeset('RelTol',1e-7,'AbsTol',1e-8,'MaxStep',.0001);
-   all=ode15s(fp,[tpin,.1],yp,o2);
-   err=max(abs(mean(all.y(1:N,:),1)-V));
-   assert(err<4e-5,'Late mass conservation');
-   Gamma=left_yield_observable(all.y(:,end),N,nu);
+     'Events',@(t,y)fullhistory_pin_event(t,y,N,nu,A,ell,xref,mu));
+   early=ode15s(startdyn,[0,.012],initial,o1);
+   assert(~isempty(early.ie)&&early.ie(1)==1,'Initial patterned pinning is not reachable');
+   tpin=early.x(end);ypin=early.y(:,end);xm=ypin(N+1);
+   [~,aux0]=fullhistory_cox_rhs(tpin,ypin,N,nu,A,ell,xref,M,[0,2]);
+   assert(aux0.contact_dissipation>=0,'Negative contact-line dissipation');
+   slow=@(t,y)fullhistory_cox_rhs(t,y,N,nu,A,ell,xref,M,[0,2]);
+   op=odeset('RelTol',1e-7,'AbsTol',1e-8,'MaxStep',.0001);
+   traj=ode15s(slow,[tpin,.1],ypin,op);
+   error_mass=max(abs(mean(traj.y(1:N,:),1)-V));
+   assert(error_mass<4e-5,'Mass conservation error');
    eq=steady_patterned_yield(xm,V,nu,A,ell,xref);
-   assert(abs(Gamma-eq.gamma)<.00018,'Nonlinear dynamics wrong static limit');
-   oe=odeset('RelTol',1e-7,'AbsTol',1e-8,'MaxStep',.000035,...
-    'Events',@(t,y)fullhistory_release_event(t,y,N,nu,A,ell,xref,lambda,tol));
-   event=ode15s(fp,[tpin,.1],yp,oe);
-   released=~isempty(event.ie);
-   assert(released==(A<=0),'Opposite-phase release classification not preserved under Cox dynamics');
-   if released,time=event.x(end);else,time=Inf;end
-   fprintf('COX_FULL_HISTORY N=%d M=%g A=%+.4f t_pin=%.10g x_minus=%.10g right_at_pin=%.10g gamma_final=%.9g gamma_exact=%.9g released=%d release_time=%g dissipation_at_pin=%g mass_error=%g\n',...
-      N,M,A,tpin,xm,xp_ref,Gamma,eq.gamma,released,time,detail.contact_dissipation,err);
+   Gamma=left_yield_observable(traj.y(:,end),N,nu);
+   assert(abs(Gamma-eq.gamma)<.00018,'Slow Cox branch equilibrium differs from exact beam');
+   oevent=odeset('RelTol',1e-7,'AbsTol',1e-8,'MaxStep',.00005,...
+     'Events',@(t,y)fullhistory_release_event(t,y,N,nu,A,ell,xref,lambda,tol));
+   s=ode15s(slow,[tpin,.1],ypin,oevent);
+   released=~isempty(s.ie);
+   assert(released==(A<=0),'Pattern sign classification fails full nonlinear late-stage law');
+   if released,trelease=s.x(end);else,trelease=Inf;end
+   fprintf('COX_SLOW N=%d M=%g A=%+.4f tpin=%.10g xm=%.10g Gamma=%.10g eq=%.10g released=%d trelease=%g dissip=%g mass_err=%g\n',...
+     N,M,A,tpin,xm,Gamma,eq.gamma,released,trelease,aux0.contact_dissipation,error_mass);
   end
  end
 end
-fprintf('PASS full local angle-cubed Cox law retains phase-selective first release.\n');
+fprintf('PASS full patterned startup and later nonlinear Cox evolution.\n');

@@ -59,3 +59,44 @@ explicitly audited). The local receding angle is an independent hysteresis
 offset from advancing pressure, which is an effective model assumption,
 not derived from resolved defect-scale stick-slip energy. Tests run from
 initial patterned state through first release, N=12/16/20, M=40/100.
+
+## Exact conservative stationary energy: thermodynamic connection to CAH
+
+The fixed-volume quartic Euler-Bernoulli beam has an explicit compliance
+I(a,b)=(b-a)^2*((b-a)^3+40*((a+b)/2)^3)/120.
+Its reduced interfacial+elastic energy for Young pressure multiplier
+kappa_Y(x)=1+A sin(k(x-xref)) is
+
+  E(a,b)=(V-(b-a))^2/(2I(a,b)) - nu * integral_a^b kappa_Y(x)dx.
+
+At each exact stationary quartic beam with free right contact line,
+complex-step differentiation independently verifies
+
+  dE/db = 0;
+  dE/da = -nu*[Gamma - A sin(k*(a-xref))],
+
+where Gamma=-p*h_left/nu-1 is precisely the pressure-based first-depinning
+quantity. The local receding criterion Gamma-loc>=lambda is thus a
+rate-independent *yield condition* expressed by this generalized energy
+gradient. 25 independent parameter cases agree at <4e-13. A reduced
+gradient inclusion with dry friction Y and viscous drag zeta,
+
+  0 in grad E + Y*partial |v| + zeta*v,
+
+satisfies the exact reduced energy identity
+  dE/dt=-Y*sum|v|-zeta*sum(v_i^2)<=0.
+The audit tests this identity on 1000 additional arbitrary states. It
+does not establish the COMPLETE time-dependent fluid-beam energy law.
+
+## Caveat about applying the full angle-cubed relation at startup
+
+The author's original initial state produces O(40-70) dimensionless
+initial contact-line speeds, well outside the small-speed quasi-steady
+range when interpreting the cubic Cox law at the tested M=40/100.
+The full two-line *linearized* kinetic closure remains in use during
+that initial stiff transient, retaining each surface's own history.
+The unlinearized angle-cubed law is applied **after the first left pin**
+when the advancing-right speed is small, with M=100 and 300.
+Do not represent this as all-time full Cox integration. At t=0 the
+cubic law can cross its physically admissible angle domain during
+stiff solver trials; silently clipping contact angles is prohibited.
