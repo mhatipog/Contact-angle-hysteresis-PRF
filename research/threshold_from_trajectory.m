@@ -8,12 +8,12 @@ V=.2;nu=4;xu0=.65;obs=[.005,.010,.015,.020,.025,.030,.035,.040];
 for N=[12,16,20]
   z0=[V*ones(N,1);xu0-V;xu0];
   theta_a=acosd(1/(1+.04));theta_r=0;
-  opts=odeset('RelTol',1e-8,'AbsTol',1e-9,...
+  opts=odeset('RelTol',1e-7,'AbsTol',1e-8,...
        'Events',@(t,z) EventsFcn(t,z,N,nu,[2,2],.04,theta_a,theta_r));
   sol0=ode15s(@(t,z)fout(t,z,N,nu,[2,2],.04),[0,.012],z0,opts);
   assert(~isempty(sol0.ie)&&sol0.ie(1)==1,'Unexpected first switching event');
   tpin=sol0.x(end);pinned=sol0.y(:,end);xm=pinned(N+1);
-  opts2=odeset('RelTol',2e-8,'AbsTol',2e-9,'MaxStep',.002);
+  opts2=odeset('RelTol',1e-7,'AbsTol',1e-8,'MaxStep',.002);
   sol=ode15s(@(t,z)fout(t,z,N,nu,[0,2],.04),[tpin,.10],pinned,opts2);
   tt=sol.x; gam=zeros(size(tt));
   for j=1:length(tt)
