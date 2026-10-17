@@ -19,3 +19,5 @@ jobs:
           sudo apt-get install -y octave
       - name: Validate phase-dependent yield response using original PDE
         run: octave --quiet --no-gui --eval "run('research/phase_sensitive_yield.m')"
+      - name: Validate opposite-phase release switch against exact beam equilibrium
+        run: octave --quiet --no-gui --eval "run('research/test_patterned_phase_transition.m')"
