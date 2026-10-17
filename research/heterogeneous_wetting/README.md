@@ -68,3 +68,41 @@ python green_solver.py
    protocol with the latest literature, particularly Chen et al. 2025.
 
 This code does not revise Bradley et al.'s published conclusions.
+
+## Reduced fixed-volume energy and local stability
+
+An **additional model-level result** follows from eliminating the quasi-static
+beam shape by its Green function and enforcing fixed liquid volume V.
+With d=x_plus-x_minus and I the double integral of G on the wetted interval,
+
+    E(x_minus,x_plus) = [V-d]^2/(2I)
+                       - (nu/c_ref) integral_(x_minus)^(x_plus) c_Y(s) ds.
+
+The first term is the Euler–Bernoulli bending energy; the second is the
+position-dependent solid wetting energy in the same dimensionless convention
+as the Laplace endpoint conditions. Direct differentiation gives
+dE/dx_minus = p h_minus + nu*c_Y(x_minus)/c_ref and
+dE/dx_plus = -p h_plus - nu*c_Y(x_plus)/c_ref, so stationarity is exactly
+equivalent to the two local Young–Laplace conditions imposed by the solver.
+
+At nu=4, V=.2, c0=.95, A=.025, phase=0, the computed *unconstrained interior
+Hessian* eigenvalues classify the located candidates as:
+
+- wavelength .25: 1 strict local minimum and 1 saddle;
+- wavelength .15: 3 strict local minima and 3 saddles;
+- wavelength .10: none found by the multistart search.
+
+The model therefore exhibits several local resting configurations with the
+*same* mean wettability and pattern amplitude but different wavelength.
+This is a numerical local-minimum result, not proof that all roots have been
+found or that the original hydrodynamic model reaches these states.
+
+For illustration only, a diagonal positive mobility gives
+dx/dt = -M grad(E) and dE/dt = -grad(E)^T M grad(E) <= 0.
+The three minima at wavelength .15 attract small nearby perturbations in this
+**synthetic gradient flow**. This is NOT a derived Cox–Voinov law or a
+reproduction of transient capillary dynamics. Thus no physical escape rate,
+basin probability, or hysteresis exponent is inferred.
+
+Run energy checks with
+`python -m pytest -q test_energy_stability.py`.
