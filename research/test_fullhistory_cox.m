@@ -4,7 +4,7 @@ addpath(fullfile(root,'Auxillary_functions'));addpath(fileparts(mfilename('fullp
 nu=4;V=.2;xp0=.65;xref=.45;ell=.25;lambda=.0293;tol=.001;
 for N=[12,16,20]
  start=[V*ones(N,1);xp0-V;xp0];
- for M=[100,40]
+ for M=[300,1000]
   for A=[.002,0,-.002]
    ff=@(t,y)fullhistory_cox_rhs(t,y,N,nu,A,ell,xref,M,[2,2]);
    o1=odeset('RelTol',1e-7,'AbsTol',1e-8,'MaxStep',.0001,...

@@ -28,7 +28,7 @@ converged=false;
 for iter=1:35
  cubic=thetaY.^3+S.*v/M;
  if any(cubic<=0)
-   error('Cox angle-cube initial guess outside positive-angle domain');
+   error('Cox positive-angle domain exceeded at t=%.9g, N=%d: v=[%.5g %.5g], cube=[%.5g %.5g]',t,N,v(1),v(2),cubic(1),cubic(2));
  end
  ta=cubic.^(1/3);
  kappa=cos(ta)/cref;
