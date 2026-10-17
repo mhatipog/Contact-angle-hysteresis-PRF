@@ -33,7 +33,7 @@ for N=[12,16,20]
    gl=A*sin(2*pi*(xm-xref)/ell);
    threshold=lambda+tol*(1+lambda);
    crossing=any(g-gl>=threshold);
-   eq=steady_patterned_yield(xm,V,nu,A,ell);
+   eq=steady_patterned_yield(xm,V,nu,A,ell,xref);
    assert(abs(eq.gamma-g(end))<.00015,'Stationary PDE disagrees with beam BVP');
    ev=odeset('RelTol',1e-7,'AbsTol',1e-8,'MaxStep',.00003, ...
      'Events',@(t,y)fullhistory_release_event(t,y,N,nu,A,ell,xref,lambda,tol));

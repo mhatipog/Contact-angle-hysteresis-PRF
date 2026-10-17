@@ -22,7 +22,7 @@ for N=[12,16,20]
    err=max(abs(mean(all.y(1:N,:),1)-V));
    assert(err<4e-5,'Late mass conservation');
    Gamma=left_yield_observable(all.y(:,end),N,nu);
-   eq=steady_patterned_yield(xm,V,nu,A,ell);
+   eq=steady_patterned_yield(xm,V,nu,A,ell,xref);
    assert(abs(Gamma-eq.gamma)<.00018,'Nonlinear dynamics wrong static limit');
    oe=odeset('RelTol',1e-7,'AbsTol',1e-8,'MaxStep',.000035,...
     'Events',@(t,y)fullhistory_release_event(t,y,N,nu,A,ell,xref,lambda,tol));

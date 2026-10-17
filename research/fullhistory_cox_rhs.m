@@ -23,25 +23,45 @@ g=sin(2*pi*([y(N+1);y(N+2)]-xref)/ell);
 kY=1+A*g;
 thetaY=acos(cref*kY);
 v=f0(N+1:N+2)+Q*(kY-1);
-for iter=1:20
- svel=S.*v;
- cubic=thetaY.^3+svel/M;
+v0=f0(N+1:N+2);
+converged=false;
+for iter=1:35
+ cubic=thetaY.^3+S.*v/M;
  if any(cubic<=0)
-   error('Angle-cube closure outside physical range');
+   error('Cox angle-cube initial guess outside positive-angle domain');
  end
  ta=cubic.^(1/3);
  kappa=cos(ta)/cref;
  dkappa=-(sin(ta)./cref).*S./(3*M*ta.^2);
- residual=v-f0(N+1:N+2)-Q*(kappa-1);
- if max(abs(residual))<1e-10
-    break;
+ residual=v-v0-Q*(kappa-1);
+ oldnorm=max(abs(residual));
+ if oldnorm<1e-10
+    converged=true;break;
  end
  jac=eye(2)-Q*diag(dkappa);
  dv=jac\residual;
- v=v-dv;
- if iter==20
-    error('Cox boundary Newton method did not converge');
+ alpha=1;
+ accepted=false;
+ for trial=1:28
+    vtrial=v-alpha*dv;
+    ctrial=thetaY.^3+S.*vtrial/M;
+    if all(ctrial>0)
+       theta_trial=ctrial.^(1/3);
+       kappa_trial=cos(theta_trial)/cref;
+       trialnorm=max(abs(vtrial-v0-Q*(kappa_trial-1)));
+       if trialnorm < oldnorm*(1-1e-5*alpha)
+          accepted=true;break;
+       end
+    end
+    alpha=alpha/2;
  end
+ if ~accepted
+    error('Cox boundary solve cannot find physical descent step');
+ end
+ v=vtrial;
+end
+if ~converged
+ error('Cox boundary Newton method did not converge');
 end
 f=f0+B*(kappa-1);
 diss=sum(cref*(kY-kappa).*(S.*v));
