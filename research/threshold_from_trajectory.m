@@ -4,7 +4,7 @@
 root=fileparts(fileparts(mfilename('fullpath')));
 addpath(fullfile(root,'Auxillary_functions'));
 addpath(fileparts(mfilename('fullpath')));
-V=.2;nu=4;xu0=.65;obs=[.005,.010,.015,.020,.025,.030,.035,.040];
+V=.2;nu=4;xu0=.65;obs=[.005,.010,.015,.020,.025,.028,.029,.0294,.0296,.0297,.030,.035,.040];
 for N=[12,16,20]
   z0=[V*ones(N,1);xu0-V;xu0];
   theta_a=acosd(1/(1+.04));theta_r=0;
