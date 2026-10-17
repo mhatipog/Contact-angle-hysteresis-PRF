@@ -31,3 +31,25 @@ archived thresholds fit the eight-step bisection lattice of the deposited
 code's interval, and none fit the article's stated interval at machine
 precision. This is a provenance difference, NOT a demonstrated problem
 with the trapping model or figures. Original generation history is unknown.
+
+## Pilot physics continuation: independent threshold discrepancy
+
+The archived `Data/numerics_comparison_data.mat` stores **initial positions**
+above which a full dynamic integration escaped during the authors' finite
+simulation horizon. They are not equilibrium meniscus positions.
+
+Run `python -m research.steady_threshold_comparison` to independently solve
+Eqs. (33)–(42) and compare its stationary `X_plus` against the deposited
+dynamic escape thresholds. Across 22 valid (lambda, nu) pairs, the discrepancy
+changes sign with lambda. For nu=4, it is +0.04156 for lambda=0.02, +0.00093
+for 0.04, and -0.01993 for 0.10. This does not demonstrate an error: the paper
+states that the equilibrium-versus-initial-position comparison is approximate.
+However, it motivates checking initial squeezing, subsequent depinning and
+finite stopping time.
+
+`research/test_original_first_pinning.m` is a narrow integration of the
+original (unmodified) `fout.m` with `ode15s` and `EventsFcn.m`, **without**
+PMAD and without changed event equations. It compares the first pinning
+time and contact-line positions to an independent SciPy finite-difference
+reconstruction. It is not a full trapping/escape test. All research scripts
+remain on this independent branch and are not part of the upstream PR.

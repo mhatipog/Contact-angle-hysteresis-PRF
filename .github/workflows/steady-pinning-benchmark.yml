@@ -20,6 +20,8 @@ jobs:
           sudo apt-get install -y octave
       - name: Verify stationary pinned equilibrium and boundary conditions
         run: octave --quiet --no-gui --eval "run('research/test_steady_pinned_equilibrium.m')"
+      - name: Cross-check initial pinning against original unmodified PDE
+        run: octave --quiet --no-gui --eval "run('research/test_original_first_pinning.m')"
 
   provenance-check:
     runs-on: ubuntu-latest
@@ -33,3 +35,5 @@ jobs:
         run: python -m pip install 'numpy>=1.26,<3' 'scipy>=1.11,<2'
       - name: Audit deposited Figure 11 threshold lattice
         run: python -m research.fig11_provenance
+      - name: Compare stationary predictions to deposited dynamic thresholds
+        run: python -m research.steady_threshold_comparison
