@@ -50,3 +50,6 @@ A useful analytical continuation is the distinction between a **finite-slope los
 - Omer, Raza and Zhang (2025), *Self-Propelling Water Droplets on Conical Spikes with Sawtooth Surface Structure*, *ACS Appl. Mater. Interfaces* 17, 31604–31613, https://doi.org/10.1021/acsami.5c03846.
 
 The numerical code here is an independent exploratory implementation. No supplemental publisher PDFs or video files are redistributed.
+## Second numerical check: cusp barrier scaling
+
+Run `python sharp_edge_barrier.py`. The script solves new pinned Young–Laplace states at the exact advancing wet-film edge and at the adjacent cusp, with 35° and 52° **illustrative dry-angle proxies**. It compares the energy difference with the leading-order endpoint-force prediction \(\Delta E=C\ell+O(\ell^2)\), where \(\ell\) is the remaining dry length. At 90% prewetting, the 35° example gives 5.0028 pJ numerically versus 5.0749 pJ asymptotically; at 99% the values are 0.5067 versus 0.5075 pJ. The final 19 nm comparison reaches ~0.1% relative agreement, limited by cancellation and BVP tolerance. These are mathematical model checks, **not measured depinning barriers**, and do not establish contact-line kinetics or a two-tooth jump.
