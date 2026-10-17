@@ -1,0 +1,21 @@
+name: Phase-sensitive original PDE pilot
+on:
+  push:
+    branches: [research/phase-sensitive-yield]
+    paths:
+      - research/phase_sensitive_yield.m
+      - research/PHASE_SENSITIVE_YIELD.md
+      - .github/workflows/phase-sensitive-yield.yml
+  workflow_dispatch:
+jobs:
+  patterned-boundary-and-first-passage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install GNU Octave
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y octave
+      - name: Validate phase-dependent yield response using original PDE
+        run: octave --quiet --no-gui --eval "run('research/phase_sensitive_yield.m')"
