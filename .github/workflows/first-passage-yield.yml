@@ -18,3 +18,5 @@ jobs:
         run: octave --quiet --no-gui --eval "run('research/test_steady_pinned_equilibrium.m')"
       - name: Compare parameter-free yield envelope to original dynamical switching
         run: octave --quiet --no-gui --eval "run('research/threshold_from_trajectory.m')"
+      - name: Validate predicted first passage directly against original event solver
+        run: octave --quiet --no-gui --eval "run('research/validate_event_reconstruction.m')"
