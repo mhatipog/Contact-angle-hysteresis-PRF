@@ -103,4 +103,20 @@ The new 'sensitivity.py' evaluates this on the **same** identified fold branch. 
 - These agree with independent centered re-solving of the fold to better than \(10^{-5}\) on the tested perturbations.
 - Nearby folds also survive \(A=0.04,0.06,0.08,0.10\), although a *global* phase diagram has not been constructed.
 
-This is a local uncertainty/design calculation, not an extrapolation to arbitrary large pattern shifts or uncontrolled real surfaces. The two added tests bring the local suite to **8 tests**.
+This is a local uncertainty/design calculation, not an extrapolation to arbitrary large pattern shifts or uncontrolled real surfaces. The first sensitivity extension added two tests; subsequent cycle and contrast suites now bring the branch to **16 locally specified tests** (remote CI status must be verified independently).
+
+## Volume cycling and contrast threshold
+
+A separate continuation and stability study gives two repinning jumps as
+volume is decreased from 0.22 to 0.203 and then returned to 0.22; the
+droplet center does not return (net displacement 0.15048070 for wavelength
+0.075). A second identical cycle has no movement: this is **one-time
+irreversible relocation**, not a perpetual ratchet.
+
+At V=0.22 the model's reference local trap appears above chemical contrast
+A_c=0.047020818924159; its near-threshold energy barrier satisfies
+Delta E ~ 0.41759484*(A-A_c)^(3/2), the standard saddle-node law.
+
+Full derivation, convergence, volume work, literature priority and
+replication instructions are in [RESULTS_VOLUME_CYCLE.md](RESULTS_VOLUME_CYCLE.md).
+No measured Young-angle pattern or full-fluid dissipation closure is claimed.
