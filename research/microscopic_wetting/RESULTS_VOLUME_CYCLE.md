@@ -156,3 +156,57 @@ counterexample/control and quantitative two-line energy landscape** that can
 form the basis of new experimentally testable predictions. Manuscript-level
 novelty would need the coupled full-PDE and measured-pattern validation,
 including whether the predicted sequence and energy accounting survive it.
+
+
+## Minimum chemical contrast for a local pinning well
+
+At **fixed** volume \(V=0.22\) and the same wavelength and beam properties,
+there is a second distinct simple fold when **pattern amplitude** \(A\) is
+used as the control parameter. Solving \(E_a=E_b=\det E''=0\) gives
+
+\[
+A_c=0.0470208189241591,\quad
+(a_c,b_c)\simeq(0.48196748,\,0.71958230).
+\]
+
+This is a local contrast threshold for the *reference* well, not a global
+guarantee that no other traps exist anywhere in the channel below \(A_c\).
+
+Set \(\mu=A-A_c>0\), and let \(u\) be the normalized soft Hessian eigenvector.
+Expanding about the fold gives a standard saddle-node normal form,
+
+\[
+E_{\rm soft}(\xi;\mu)
+  =E_c+s\mu\xi+\tfrac{t}{6}\xi^3+\cdots,\quad
+s=u\cdot\partial_A\nabla E,\quad
+t=\partial^3_{\xi}E.
+\]
+
+Numerical independent checks give
+\(s\approx-2.8511776210\),
+\(t\approx472.57426\), and the *derived*, not fitted, barrier coefficient
+
+\[
+\Delta E \sim
+\frac{4|s|}{3}\sqrt{\frac{2|s|}{|t|}}\,\mu^{3/2}
+\approx 0.41759484\,\mu^{3/2}.
+\]
+
+Solve both nearby equilibria for seven contrasts between
+\(\mu=10^{-4}\) and \(10^{-6}\); their computed barrier values have
+log–log slope approximately **1.499819**, in agreement with the generic
+saddle-node exponent \(3/2\). At \(\mu=10^{-4}\), the measured model barrier
+is approximately \(4.17194\times10^{-7}\), versus the leading prediction
+\(4.17595\times10^{-7}\).
+
+The exponent is **not** a novel universal physical discovery. It checks
+that the energy landscape has the required non-degenerate bifurcation
+structure. It creates a computable contrast threshold and near-threshold
+barrier for subsequent geometry/chemistry matching and experiments.
+
+Reproduce:
+
+    python research/microscopic_wetting/contrast_threshold.py
+
+The code independently finds the minimum, saddle, curvature and
+energy barriers, and tests the asymptotic coefficient/exponent.
