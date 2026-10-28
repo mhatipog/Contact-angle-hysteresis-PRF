@@ -1,0 +1,25 @@
+name: Microscopic-energy fold checks
+
+on:
+  push:
+    branches:
+      - research/microscopic-energy-folds-20261028
+    paths:
+      - research/microscopic_wetting/**
+      - .github/workflows/microscopic-energy-folds.yml
+  workflow_dispatch:
+
+jobs:
+  beam-fold:
+    runs-on: [self-hosted, vecture]
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check Python environment and install numerical dependencies
+        run: |
+          python3 -m venv .venv
+          .venv/bin/python -m pip install --disable-pip-version-check numpy scipy
+      - name: Independently test energy, beam compliance and fold
+        run: .venv/bin/python -m unittest discover -s research/microscopic_wetting -p 'test_*.py' -v
+      - name: Recompute reference fold
+        run: .venv/bin/python research/microscopic_wetting/beam_fold.py
