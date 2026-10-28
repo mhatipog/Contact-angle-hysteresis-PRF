@@ -75,7 +75,7 @@ From this repository's root:
     python research/microscopic_wetting/beam_fold.py
     python -m unittest discover -s research/microscopic_wetting -p 'test_*.py' -v
 
-Six tests cover: direct numerical quadrature of the Green kernel; independent complex-step energy gradient and finite-difference Hessian; physical Young cosine range; fold plus adjacent minimum/saddle; volume-work and dissipative energy identity; invalid/collapsed configurations.
+Six core tests cover: direct numerical quadrature of the Green kernel; independent complex-step energy gradient and finite-difference Hessian; physical Young cosine range; fold plus adjacent minimum/saddle; volume-work and dissipative energy identity; invalid/collapsed configurations.
 
 ## Publication gates
 
@@ -86,3 +86,21 @@ Six tests cover: direct numerical quadrature of the Green kernel; independent co
 5. Establish novelty against Bradley–Hewitt–Vella (PRF 2021), Chen et al. (Capillarity 2025, doi:10.46690/capi.2025.04.02), Millet et al. (IJNAMG 2026, doi:10.1002/nag.70363), and Zhang et al. (JCIS 2026, doi:10.1016/j.jcis.2025.139781). In particular *a variational hysteresis framework or pattern-dependent trapping alone is not novel*.
 
 **Publication status:** a properly checked numerical intermediate result, not journal-ready. Full experimental or dynamical validation remains the decisive next step.
+
+## Inverse-design / uncertainty sensitivity (local fold branch)
+
+The fold equation is \(F(a,b,V;A,\phi)=(E_a,E_b,\det E'')=0\).
+Provided this three-equation Jacobian remains nonsingular, implicit differentiation gives
+
+\[
+\frac{d(a,b,V)}{d\theta}=-F_{(a,b,V)}^{-1}F_\theta,\qquad \theta\in\{A,\phi\}.
+\]
+
+The new 'sensitivity.py' evaluates this on the **same** identified fold branch. At the reference point:
+
+- \(dV_c/dA=-0.0482989900\) per unit Young-multiplier amplitude.
+- \(dV_c/d\phi=+0.0008219084\) per radian of surface phase.
+- These agree with independent centered re-solving of the fold to better than \(10^{-5}\) on the tested perturbations.
+- Nearby folds also survive \(A=0.04,0.06,0.08,0.10\), although a *global* phase diagram has not been constructed.
+
+This is a local uncertainty/design calculation, not an extrapolation to arbitrary large pattern shifts or uncontrolled real surfaces. The two added tests bring the local suite to **8 tests**.
